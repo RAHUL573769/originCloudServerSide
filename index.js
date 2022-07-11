@@ -14,11 +14,27 @@ const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1,
 });
 
-console.log(uri);
+async function run() {
+  try {
+    await client.connect();
+    const projectCollection = client
+      .db("internship-assignment")
+      .collection("project");
+    app.post("/projects", async (req, res) => {
+      const newProjects = req.body;
+
+      const resultProjects = await projectCollection.insertOne(newProjects);
+      res.send(resultProjects);
+    });
+  } finally {
+  }
+}
+
+run().catch(console.dir);
 
 // client.connect((err) => {
 //   const collection = client.db("test").collection("devices");
-//   // perform actions on the collection object
+
 //   client.close();
 // });
 
