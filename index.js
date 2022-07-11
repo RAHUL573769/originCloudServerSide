@@ -26,6 +26,13 @@ async function run() {
       const resultProjects = await projectCollection.insertOne(newProjects);
       res.send(resultProjects);
     });
+
+    app.get("/projects", async (req, res) => {
+      const query = {};
+      const cursor = projectCollection.find(query);
+      const projectFinal = await cursor.toArray();
+      res.send(projectFinal);
+    });
   } finally {
   }
 }
