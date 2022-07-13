@@ -20,6 +20,16 @@ async function run() {
     const projectCollection = client
       .db("internship-assignment")
       .collection("project");
+
+    const profileCollection = client
+      .db("internship-assignment")
+      .collection("profile");
+
+    app.post("/profile", async (req, res) => {
+      const newProfile = req.body;
+      const resultProfile = await profileCollection.insertOne(newProfile);
+      res.send(resultProfile);
+    });
     app.post("/projects", async (req, res) => {
       const newProjects = req.body;
 
