@@ -37,6 +37,13 @@ async function run() {
       res.send(resultProjects);
     });
 
+    app.get("/profile", async (req, res) => {
+      const query = {};
+      const cursor = profileCollection.find(query);
+      const profileFinal = await cursor.toArray();
+      res.send(profileFinal);
+    });
+
     app.get("/projects", async (req, res) => {
       const query = {};
       const cursor = projectCollection.find(query);
