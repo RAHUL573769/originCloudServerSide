@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 5000;
@@ -36,12 +36,27 @@ async function run() {
       const resultProjects = await projectCollection.insertOne(newProjects);
       res.send(resultProjects);
     });
+    app.delete("/projects/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = {
+        _id: ObjectId(id),
+      };
 
+      const result = await projectCollection.deleteOne(query);
+      res.send(result);
+    });
     app.get("/profile", async (req, res) => {
       const query = {};
       const cursor = profileCollection.find(query);
       const profileFinal = await cursor.toArray();
       res.send(profileFinal);
+    });
+
+    app.get("/projects/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await projectCollection.findOne(query);
+      res.send(result);
     });
 
     app.get("/projects", async (req, res) => {
